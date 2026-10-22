@@ -1,11 +1,8 @@
 package task10
 
-interface PlayerCommand {
-    object PLAY : PlayerCommand
-    object PAUSE : PlayerCommand
-    object STOP : PlayerCommand
-    object MUTE : PlayerCommand
-}
+sealed interface PlayerCommand
+
+enum class Basic : PlayerCommand { PLAY, PAUSE, STOP, MUTE }
 data class Seek(val seconds: Int) : PlayerCommand
 data class Volume(val level: Int) : PlayerCommand
 
@@ -13,10 +10,10 @@ fun parse(line: String): PlayerCommand? {
     val parts = line.trim().lowercase().split(" ")
     val number = parts.getOrNull(1)?.toIntOrNull()
     return when (parts[0]) {
-        "play" -> PlayerCommand.PLAY
-        "pause" -> PlayerCommand.PAUSE
-        "stop" -> PlayerCommand.STOP
-        "mute" -> PlayerCommand.MUTE
+        "play" -> Basic.PLAY
+        "pause" -> Basic.PAUSE
+        "stop" -> Basic.STOP
+        "mute" -> Basic.MUTE
         "seek" -> number?.let { Seek(it) }
         "volume" -> number?.takeIf { it in 0..100 }?.let { Volume(it) }
         else -> null
@@ -29,13 +26,13 @@ class Player {
 
     fun handle(command: PlayerCommand) {
         when (command) {
-            PlayerCommand.PLAY -> println("Playing from ${position}s")
-            PlayerCommand.PAUSE -> println("Paused at ${position}s")
-            PlayerCommand.STOP -> {
+            Basic.PLAY -> println("Playing from ${position}s")
+            Basic.PAUSE -> println("Paused at ${position}s")
+            Basic.STOP -> {
                 position = 0
                 println("Stopped")
             }
-            PlayerCommand.MUTE -> println("Muted")
+            Basic.MUTE -> println("Muted")
             is Seek -> {
                 position = command.seconds
                 println("Jumped to ${position}s")
