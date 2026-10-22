@@ -7,7 +7,6 @@ fun report(error: AppError) {
         is IoError -> "I/O"
         Timeout -> "timeout"
         is CustomError -> "custom"
-        else -> "unknown"
     }
     println("[$kind] ${error.text}")
 }
