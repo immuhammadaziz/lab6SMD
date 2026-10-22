@@ -1,10 +1,10 @@
 package task12
 
-interface AppError {
+sealed interface AppError {
     val text: String
 }
 
-open class IoError(override val text: String) : AppError {
+sealed class IoError(override val text: String) : AppError {
     class FileMissing(val path: String) : IoError("File not found: $path")
     class NoPermission(val path: String) : IoError("No permission for $path")
 }
