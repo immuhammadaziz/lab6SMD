@@ -1,18 +1,8 @@
 package task09
 
-class Severity(val name: String, val level: Int) : Comparable<Severity> {
-    override fun compareTo(other: Severity): Int = this.level.compareTo(other.level)
-    override fun toString() = name
+enum class Severity { MINOR, MAJOR, CRITICAL, BLOCKER }
 
-    companion object {
-        val MINOR = Severity("MINOR", 1)
-        val MAJOR = Severity("MAJOR", 2)
-        val CRITICAL = Severity("CRITICAL", 3)
-        val BLOCKER = Severity("BLOCKER", 4)
-    }
-}
-
-abstract class Incident(val severity: Severity) {
+sealed class Incident(val severity: Severity) {
     class FileProblem(val fileName: String) : Incident(Severity.MAJOR)
     class DatabaseDown(val database: String) : Incident(Severity.CRITICAL)
     class SlowPage(val url: String) : Incident(Severity.MINOR)
@@ -26,7 +16,6 @@ fun describe(incident: Incident): String = when (incident) {
     is Incident.SlowPage -> "Page ${incident.url} is slow"
     Incident.Crash -> "The application crashed"
     is Incident.OutOfMemory -> "Out of memory error"
-    else -> "Unknown incident"
 }
 
 fun main() {
