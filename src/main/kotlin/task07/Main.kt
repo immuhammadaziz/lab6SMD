@@ -1,13 +1,13 @@
 package task07
 
-interface ApiRequest
+sealed interface ApiRequest
 data class LoginRequest(val username: String, val password: String) : ApiRequest
-object LogoutRequest : ApiRequest
+data object LogoutRequest : ApiRequest
 data class RefreshRequest(val token: String) : ApiRequest
 
 data class UserData(val userId: String, val name: String)
 
-abstract class ApiResponse {
+sealed class ApiResponse {
     data class UserSuccess(val user: UserData) : ApiResponse()
     data object NotLoggedIn : ApiResponse()
     data class Error(val message: String) : ApiResponse()
@@ -33,7 +33,6 @@ fun handleRequest(request: ApiRequest): ApiResponse = when (request) {
         if (user == null) ApiResponse.NotLoggedIn else ApiResponse.UserSuccess(user)
     }
     is RefreshRequest -> ApiResponse.Error("Refresh is not supported yet")
-    else -> ApiResponse.Error("Unknown request")
 }
 
 fun show(response: ApiResponse) {
@@ -41,7 +40,6 @@ fun show(response: ApiResponse) {
         is ApiResponse.UserSuccess -> println("OK: ${response.user.name} (${response.user.userId})")
         ApiResponse.NotLoggedIn -> println("Nobody is logged in")
         is ApiResponse.Error -> println("FAILED: ${response.message}")
-        else -> println("Unknown response")
     }
 }
 
