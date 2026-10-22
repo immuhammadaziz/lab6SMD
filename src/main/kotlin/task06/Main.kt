@@ -1,6 +1,6 @@
 package task06
 
-abstract class UiState {
+sealed class UiState {
     data object Loading : UiState()
     data class Success(val city: String, val temperature: Int) : UiState()
     data class Error(val message: String) : UiState()
@@ -23,7 +23,6 @@ fun render(state: UiState) {
         is UiState.Success -> println("${state.city}: ${state.temperature} C")
         is UiState.Error -> println("Error: ${state.message}")
         UiState.Offline -> println("No internet connection")
-        else -> println("Unknown state")
     }
 }
 
