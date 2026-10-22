@@ -1,6 +1,6 @@
 package task08
 
-abstract class ValidationError(val field: String, val message: String) {
+sealed class ValidationError(val field: String, val message: String) {
     class EmptyName : ValidationError("name", "The name must not be empty")
     class InvalidAge(text: String) : ValidationError("age", "'$text' is not an age between 0 and 120")
     class BadEmail(text: String) : ValidationError("email", "'$text' is not an e-mail address")
