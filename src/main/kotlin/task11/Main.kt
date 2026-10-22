@@ -1,8 +1,8 @@
 package task11
 
-interface Chargeable { val batteryHours: Int }
-interface Wireless { val range: Int }
-interface Waterproof
+sealed interface Chargeable { val batteryHours: Int }
+sealed interface Wireless { val range: Int }
+sealed interface Waterproof
 
 data class Phone(override val batteryHours: Int = 24, override val range: Int = 50) : Chargeable, Wireless
 data class Headphones(override val batteryHours: Int = 8, override val range: Int = 10) : Chargeable, Wireless, Waterproof
@@ -22,7 +22,6 @@ fun chargingNote(device: Chargeable): String = when (device) {
     is Phone -> "Charge the phone every night"
     is Headphones -> "Charge the headphones after 8 hours"
     is SmartLamp -> "Charge the lamp when battery is low"
-    else -> "Charge as needed"
 }
 
 fun main() {
