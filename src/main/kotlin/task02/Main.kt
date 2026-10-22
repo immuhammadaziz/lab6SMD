@@ -1,30 +1,28 @@
 package task02
 
-abstract class Operation(val symbol: String) {
+enum class Operation(val symbol: String) {
+    ADD("+") {
+        override fun apply(a: Double, b: Double) = a + b
+    },
+    SUBTRACT("-") {
+        override fun apply(a: Double, b: Double) = a - b
+    },
+    MULTIPLY("*") {
+        override fun apply(a: Double, b: Double) = a * b
+    },
+    DIVIDE("/") {
+        override fun apply(a: Double, b: Double) = a / b
+    },
+    MODULO("%") {
+        override fun apply(a: Double, b: Double) = a % b
+    },
+    POWER("^") {
+        override fun apply(a: Double, b: Double) = kotlin.math.pow(a, b)
+    };
+
     abstract fun apply(a: Double, b: Double): Double
 
-    class Add : Operation("+") {
-        override fun apply(a: Double, b: Double) = a + b
-    }
-    class Subtract : Operation("-") {
-        override fun apply(a: Double, b: Double) = a - b
-    }
-    class Multiply : Operation("*") {
-        override fun apply(a: Double, b: Double) = a * b
-    }
-    class Divide : Operation("/") {
-        override fun apply(a: Double, b: Double) = a / b
-    }
-    class Modulo : Operation("%") {
-        override fun apply(a: Double, b: Double) = a % b
-    }
-    class Power : Operation("^") {
-        override fun apply(a: Double, b: Double) = kotlin.math.pow(a, b)
-    }
-
     companion object {
-        val entries = listOf(Add(), Subtract(), Multiply(), Divide(), Modulo(), Power())
-
         fun fromSymbol(symbol: String): Operation? =
             entries.firstOrNull { it.symbol == symbol }
     }
@@ -44,7 +42,7 @@ fun main() {
         println("Cannot understand '${parts.joinToString(" ")}'")
         return
     }
-    if (operation is Operation.Divide && b == 0.0) {
+    if (operation == Operation.DIVIDE && b == 0.0) {
         println("Division by zero")
         return
     }
