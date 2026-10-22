@@ -1,6 +1,6 @@
 package task05
 
-abstract class Payment {
+sealed class Payment {
     data class CreditCard(val number: String, val expiry: String) : Payment()
     data class PayPal(val email: String) : Payment()
     data object Cash : Payment()
@@ -40,7 +40,6 @@ fun process(payment: Payment, amount: Double) {
             println("Please pay $amount in cash at the desk")
         is Payment.Crypto ->
             println("Waiting for a transfer to wallet ${payment.wallet}")
-        else -> println("Unknown payment")
     }
 }
 
