@@ -1,6 +1,6 @@
 package task14
 
-interface Outcome<out T> {
+sealed interface Outcome<out T> {
     data class Ok<T>(val value: T) : Outcome<T>
     data class Fail(val reason: String) : Outcome<Nothing>
 }
