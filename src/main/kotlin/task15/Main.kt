@@ -1,25 +1,13 @@
 package task15
 
-class Priority(val name: String, val level: Int) : Comparable<Priority> {
-    override fun compareTo(other: Priority): Int = this.level.compareTo(other.level)
-    override fun toString() = name
+enum class Priority { LOW, NORMAL, HIGH, URGENT }
 
-    companion object {
-        val LOW = Priority("LOW", 1)
-        val NORMAL = Priority("NORMAL", 2)
-        val HIGH = Priority("HIGH", 3)
-        val URGENT = Priority("URGENT", 4)
-
-        val entries = listOf(LOW, NORMAL, HIGH, URGENT)
-    }
-}
-
-interface Action
+sealed interface Action
 data class Open(val title: String, val priority: Priority) : Action
 data class Close(val id: Int) : Action
 data class Comment(val id: Int, val text: String) : Action
 data class Reopen(val id: Int) : Action
-object ListAll : Action
+data object ListAll : Action
 
 class Ticket(val id: Int, val title: String, val priority: Priority) {
     var isOpen = true
@@ -96,7 +84,7 @@ fun execute(action: Action) {
 
 fun main() {
     println("Commands: open PRIORITY TITLE, close ID, reopen ID, comment ID TEXT, list, exit")
-    println("Priorities: ${Priority.entries.joinToString { it.name }}")
+    println("Priorities: ${Priority.entries.joinToString()}")
     while (true) {
         print("> ")
         val line = readln()
