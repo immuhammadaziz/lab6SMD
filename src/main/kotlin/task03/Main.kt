@@ -1,26 +1,16 @@
 package task03
 
-class Delivery(val name: String) {
-    companion object {
-        val PICKUP = Delivery("PICKUP")
-        val COURIER = Delivery("COURIER")
-        val EXPRESS = Delivery("EXPRESS")
-        val DRONE = Delivery("DRONE")
+enum class Delivery { PICKUP, COURIER, EXPRESS, DRONE }
 
-        val entries = listOf(PICKUP, COURIER, EXPRESS, DRONE)
-    }
-}
-
-fun shippingCost(type: Delivery, weightKg: Double): Double = when (type.name) {
-    "PICKUP" -> 0.0
-    "COURIER" -> 15_000 + 2_000 * weightKg
-    "EXPRESS" -> 40_000 + 5_000 * weightKg
-    "DRONE" -> 25_000 + 3_000 * weightKg
-    else -> 0.0
+fun shippingCost(type: Delivery, weightKg: Double): Double = when (type) {
+    Delivery.PICKUP -> 0.0
+    Delivery.COURIER -> 15_000 + 2_000 * weightKg
+    Delivery.EXPRESS -> 40_000 + 5_000 * weightKg
+    Delivery.DRONE -> 25_000 + 3_000 * weightKg
 }
 
 fun main() {
-    println("Delivery types: ${Delivery.entries.joinToString { it.name }}")
+    println("Delivery types: ${Delivery.entries.joinToString()}")
     print("Delivery type: ")
     val typeName = readln().trim()
     val type = Delivery.entries.firstOrNull { it.name.equals(typeName, ignoreCase = true) }
