@@ -1,6 +1,6 @@
 package task13
 
-abstract class Passenger {
+sealed class Passenger {
     data class Adult(val name: String) : Passenger()
     data class Child(val name: String, val age: Int) : Passenger()
     data class Senior(val name: String, val age: Int) : Passenger()
@@ -12,7 +12,6 @@ fun fare(passenger: Passenger, baseFare: Int): Int = when (passenger) {
     is Passenger.Senior if passenger.age > 80 -> 0
     is Passenger.Senior -> baseFare * 7 / 10
     is Passenger.Adult -> baseFare
-    else -> baseFare
 }
 
 fun main() {
